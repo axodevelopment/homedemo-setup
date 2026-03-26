@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+#operator selection
+- ossm3x/application.yaml
+- Tempo/application.yaml
+- OpenTelemetry/application.yaml
+- Kiali/application.yaml
+- Keycloak/application.yaml
