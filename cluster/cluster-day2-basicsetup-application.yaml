@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://github.com/axodevelopment/homedemo-setup
     targetRevision: main
-    path: cluster-day2/basicsetup
+    path: cluster-day2
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-gitops
