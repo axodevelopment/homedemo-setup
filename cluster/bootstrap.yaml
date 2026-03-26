@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dd-argocd
+  name: cluster-bootstrap
   namespace: openshift-gitops
   annotations:
-    argocd.argoproj.io/sync-wave: "-10"
+    argocd.argoproj.io/sync-wave: "-5"
   labels:
     dependency: observability
   finalizers:
@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://github.com/axodevelopment/homedemo-setup
     targetRevision: main
-    path: demo-dep/argocd
+    path: cluster
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-gitops
