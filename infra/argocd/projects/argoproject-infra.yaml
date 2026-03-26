@@ -11,6 +11,7 @@ spec:
   description: Platform infra — operators, service mesh core, monitoring
   sourceRepos:
   - https://github.com/axodevelopment/homedemo-setup
+  - https://github.com/axodevelopment/workshop-ossm
   destinations:
   - namespace: "*"
     server: https://kubernetes.default.svc
