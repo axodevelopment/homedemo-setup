@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dd-operators-OpenTelemetry
+  name: dd-operators-Kiali
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "-10"
@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://github.com/axodevelopment/homedemo-setup
     targetRevision: main
-    path: demo-dep/operators/OpenTelemetry
+    path: demo-dep/operators/Kiali
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-gitops
