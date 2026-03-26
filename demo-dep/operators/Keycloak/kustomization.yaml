@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
 - 99-namespace.yaml
 - 90-subscription.yaml
-#- 90-operatorgroup.yaml
+- 90-operatorgroup.yaml
