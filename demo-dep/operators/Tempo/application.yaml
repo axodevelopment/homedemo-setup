@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dd-operators-Tempo
+  name: dd-operators-tempo
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "-10"

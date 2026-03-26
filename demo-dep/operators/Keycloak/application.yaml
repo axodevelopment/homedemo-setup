@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dd-operators-Keycloak
+  name: dd-operators-keycloak
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "-10"
