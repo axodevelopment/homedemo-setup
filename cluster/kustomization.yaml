@@ -4,4 +4,5 @@ resources:
 - cluster-day2-basicsetup-application.yaml
 - infra-application.yaml
 - demodep-argocd-application.yaml
+- live-operators.yaml
 - live-application.yaml
