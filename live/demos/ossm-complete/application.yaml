@@ -17,7 +17,7 @@ spec:
     path: live/demos/ossm-complete
   destination:
     server: https://kubernetes.default.svc
-    namespace: openshift-gitops
+    namespace: bookinfo
   syncPolicy:
     automated:
       prune: true
