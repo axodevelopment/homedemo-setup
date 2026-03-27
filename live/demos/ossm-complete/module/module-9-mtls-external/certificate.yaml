@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: productpage-cert
+  namespace: bookinfo
+spec:
+  secretName: productpage-tls
+  duration: 1h
+  renewBefore: 30m
+  subject:
+    organizations:
+    - bookinfo
+  dnsNames:
+  - productpage.bookinfo.svc.cluster.local
+  uris:
+  - spiffe://cluster.local/ns/bookinfo/sa/bookinfo-productpage
+  issuerRef:
+    name: cluster-issuer
+    kind: ClusterIssuer
