@@ -1,0 +1,8 @@
+apiVersion: sailoperator.io/v1
+kind: ZTunnel
+metadata:
+  name: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  namespace: ztunnel

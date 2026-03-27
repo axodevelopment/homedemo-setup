@@ -1,0 +1,43 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+  namespace: istio-system
+spec:
+  serviceAccount: otel-collector
+  podAnnotations:
+    ambient.istio.io/redirection: "disabled"
+  config:
+    extensions:
+      bearertokenauth:
+        filename: /var/run/secrets/kubernetes.io/serviceaccount/token
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: '0.0.0.0:4317'
+          http:
+            endpoint: '0.0.0.0:4318'
+    processors:
+      batch:
+        timeout: 5s
+        send_batch_size: 1000
+    exporters:
+      otlp:
+        endpoint: 'tempo-tempo-gateway.tempo.svc.cluster.local:8090'
+        tls:
+          insecure: false
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+        headers:
+          X-Scope-OrgID: "dev"
+        auth:
+          authenticator: bearertokenauth
+      debug:
+        verbosity: basic
+    service:
+      extensions: [bearertokenauth]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp, debug]

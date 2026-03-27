@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bookinfo
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+  labels:
+    istio.io/dataplane-mode: ambient
+    istio.io/use-waypoint: bookinfo-waypoint
+    istio-discovery: enabled
+    openshift.io/user-monitoring: "true"
