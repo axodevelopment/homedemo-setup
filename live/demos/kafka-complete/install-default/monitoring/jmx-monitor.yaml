@@ -1,0 +1,40 @@
+# NOTE this is ok only if I am using a single replica
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-kafka-jmx-metrics
+  namespace: kafka-demo-core
+  labels:
+    app: strimzi-custom
+    strimzi.io/cluster: kafka
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9404"
+spec:
+  ports:
+  - name: metrics
+    port: 9404
+    protocol: TCP
+    targetPort: 9404
+  selector:
+    strimzi.io/cluster: kafka
+    strimzi.io/kind: Kafka
+    strimzi.io/name: kafka-kafka
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kafka-kafka-jmx
+  namespace: kafka-demo-core
+  labels:
+    app: strimzi
+spec:
+  selector:
+    matchLabels:
+      app: strimzi-custom
+      strimzi.io/cluster: kafka
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics

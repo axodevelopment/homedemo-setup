@@ -1,21 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: dd-operators-keycloak
+  name: demo-kafka-complete
   namespace: openshift-gitops
   annotations:
-    argocd.argoproj.io/sync-wave: "-10"
+    argocd.argoproj.io/sync-wave: "0"
   labels:
     dependency: observability
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
   source:
     repoURL: https://github.com/axodevelopment/homedemo-setup
     targetRevision: main
-    path: demo-dep/operators/Keycloak
+    path: live/demos/kafka-complete
   destination:
     server: https://kubernetes.default.svc
-    namespace: openshift-gitops
+    namespace: kafka-demo-core
   syncPolicy:
     automated:
       prune: true

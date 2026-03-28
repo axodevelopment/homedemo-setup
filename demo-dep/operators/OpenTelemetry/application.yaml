@@ -7,8 +7,6 @@ metadata:
     argocd.argoproj.io/sync-wave: "-10"
   labels:
     dependency: observability
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
   source:

@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-kafka-exporter
+  namespace: kafka-demo-core
+  labels:
+    app: strimzi
+    strimzi.io/cluster: kafka
+    strimzi.io/kind: Kafka
+    strimzi.io/name: kafka-kafka-exporter
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9404"
+spec:
+  ports:
+  - name: metrics
+    port: 9404
+    protocol: TCP
+    targetPort: 9404
+  selector:
+    strimzi.io/cluster: kafka
+    strimzi.io/kind: Kafka
+    strimzi.io/name: kafka-kafka-exporter
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kafka-kafka-exporter
+  namespace: kafka-demo-core
+  labels:
+    app: strimzi
+spec:
+  selector:
+    matchLabels:
+      strimzi.io/cluster: kafka
+      strimzi.io/kind: Kafka
+      strimzi.io/name: kafka-kafka-exporter
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
