@@ -1,4 +1,16 @@
-  resourceHealthChecks:
+### What This Does
+
+# TODO: a Health Check for subscription
+# - InProgress
+# The goal is to ignnore UpgradePending scenarios which keep things spinning
+
+#Logic 
+#      Fairly straight forward checks below
+
+# NOTES  tso far this seems to work 
+
+
+ resourceHealthChecks:
   - group: operators.coreos.com
     kind: Subscription
     check: |

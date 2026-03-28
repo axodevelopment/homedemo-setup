@@ -1,0 +1,60 @@
+### What This Does
+
+# TODO: a Health Check for gateway without a xlb
+# - InProgress
+# This is supposed to adjust the hc for type Gate, which in demo since there is no loadbalancer in my environment
+# there is no IP so the Gateway never becomes 'Healthy' even though it technicall is
+
+#Logic 
+#      Accepted=True is sufficient for Healthy on OpenShift         - hs.status = "Healthy"
+#      Programmed can be False when no LoadBalancer IP is assigned  - hs.status = "Healthy"
+#      Accepted=False is a real problem                             - hs.status = "Degraded"
+
+# NOTES  thyis is normal on bare-metal / OpenShift without cloud LB
+
+```
+spec:
+  resourceHealthChecks:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    check: |
+      hs = {}
+      hs.status = "Progressing"
+      hs.message = "Waiting for Gateway conditions"
+
+      if obj.status == nil or obj.status.conditions == nil then
+        return hs
+      end
+
+      local accepted = false
+      local programmed = false
+      local acceptedMsg = ""
+      local programmedMsg = ""
+
+      for _, c in ipairs(obj.status.conditions) do
+        if c.type == "Accepted" and c.status == "True" then
+          accepted = true
+          acceptedMsg = c.message
+        end
+        if c.type == "Programmed" and c.status == "True" then
+          programmed = true
+          programmedMsg = c.message
+        end
+      end
+
+
+      if accepted then
+        hs.status = "Healthy"
+        if programmed then
+          hs.message = programmedMsg
+        else
+          hs.message = "Accepted — " .. acceptedMsg
+        end
+        return hs
+      end
+
+
+      hs.status = "Degraded"
+      hs.message = "Gateway not accepted by controller"
+      return hs
+```

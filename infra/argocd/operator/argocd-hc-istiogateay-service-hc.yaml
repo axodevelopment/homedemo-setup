@@ -1,5 +1,19 @@
 ### What This Does
 
+# TODO: a Health Check for gateway service without a xlb
+# - InProgress
+# This is supposed to adjust the hc for type Gate, which in demo since there is no loadbalancer in my environment
+# there is no IP so the Service never becomes 'Healthy' even though it technicall is
+
+#Logic 
+#      In Istio -> Status == True                                   - hs.status = "Healthy" || "Degraded"
+# ???  In status.loadBalancer.ingress -> >0 == True                 - hs.status = "Healthy" || "Degraded"
+# ???  Else                                                         - hs.status = "Healthy"
+
+# NOTES  thyis is normal on bare-metal / OpenShift without cloud LB
+# This is risky since i haven't checked things like aws or metallb etc the else is risky but I assume ingress > 0 is valid
+
+
 The logic branches on the `gateway.istio.io/managed` label:
 ```
 Service has gateway.istio.io/managed label?
