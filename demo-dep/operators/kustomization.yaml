@@ -6,3 +6,5 @@ resources:
   - OpenTelemetry/application.yaml
   - Kiali/application.yaml
   - Keycloak/application.yaml
+  - StreamsForApacheKafka/application.yaml
+  - StreamsForApacheKafkaProxy/application.yaml
