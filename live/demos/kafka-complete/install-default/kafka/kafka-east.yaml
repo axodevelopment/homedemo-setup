@@ -64,15 +64,23 @@ spec:
         memory: "2Gi"
 
   entityOperator:
-    topicOperator: {}
-    userOperator: {}
-    resources:
-      requests:
-        cpu: "200m"
-        memory: "256Mi"
-      limits:
-        cpu: "500m"
-        memory: "512Mi"
+    topicOperator:
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+    userOperator:
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+
 
   cruiseControl:
     resources:
