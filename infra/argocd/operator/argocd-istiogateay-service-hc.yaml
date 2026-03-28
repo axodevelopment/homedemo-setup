@@ -1,0 +1,78 @@
+### What This Does
+
+The logic branches on the `gateway.istio.io/managed` label:
+```
+Service has gateway.istio.io/managed label?
+  YES → look at status.conditions for istio.io/WaypointBound
+          True  → Healthy (message from condition)
+          False → Degraded
+          absent → Healthy (still initialising)
+  NO  → type=LoadBalancer?
+          has ingress IP → Healthy
+          no IP yet      → Progressing
+        anything else → Healthy
+```
+
+
+the spec
+
+```
+spec:
+  resourceHealthChecks:
+
+    - check: |
+        hs = {}
+
+        -- is this istiogateway?
+        local isIstioGateway = false
+        if obj.metadata ~= nil and obj.metadata.labels ~= nil then
+          if obj.metadata.labels["gateway.istio.io/managed"] ~= nil then
+            isIstioGateway = true
+          end
+        end
+
+        -- i need to test this against multiple scenarios like aws elb
+        if isIstioGateway then
+          hs.status = "Healthy"
+          hs.message = "Istio-managed gateway service"
+          if obj.status ~= nil and obj.status.conditions ~= nil then
+            for _, c in ipairs(obj.status.conditions) do
+              if c.type == "istio.io/WaypointBound" then
+                if c.status == "True" then
+                  hs.status = "Healthy"
+                  hs.message = c.message
+                else
+                  hs.status = "Degraded"
+                  hs.message = c.message
+                end
+                return hs
+              end
+            end
+          end
+          return hs
+        end
+
+        -- Standard LoadBalancer check for non-Istio services
+        if obj.spec ~= nil and obj.spec.type == "LoadBalancer" then
+          if obj.status ~= nil
+            and obj.status.loadBalancer ~= nil
+            and obj.status.loadBalancer.ingress ~= nil
+            and #obj.status.loadBalancer.ingress > 0 then
+            hs.status = "Healthy"
+            hs.message = "LoadBalancer IP assigned"
+            return hs
+          end
+          hs.status = "Progressing"
+          hs.message = "Waiting for LoadBalancer IP"
+          return hs
+        end
+
+        -- else
+        hs.status = "Healthy"
+        hs.message = ""
+        return hs
+      kind: Service
+```
+
+---
+
