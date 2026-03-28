@@ -60,15 +60,15 @@ spec:
           cpu: "500m"
           memory: "512Mi"
 
-
-  cruiseControl:
-    resources:
-      requests:
-        cpu: "500m"
-        memory: "1Gi"
-      limits:
-        cpu: "2"
-        memory: "2Gi"
+  # Cruise Control requires at least 2 brokers for this to be deployed
+#  cruiseControl:
+#    resources:
+#      requests:
+#        cpu: "500m"
+#        memory: "1Gi"
+#      limits:
+#        cpu: "2"
+#        memory: "2Gi"
 
   kafkaExporter:
     topicRegex: ".*"
