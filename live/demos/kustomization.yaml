@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 # pick the demo or demos
 - ossm-complete/application.yaml
+- kafka-complete/application.yaml
