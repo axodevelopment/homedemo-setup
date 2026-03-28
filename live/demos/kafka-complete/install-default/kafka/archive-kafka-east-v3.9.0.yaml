@@ -8,7 +8,8 @@ metadata:
     strimzi.io/kraft: enabled
 spec:
   kafka:
-    #version: 4.1.0 - allowing kafka to decide
+    version: 3.9.0
+    replicas: 1
     listeners:
       - name: plain
         port: 9092
@@ -33,7 +34,13 @@ spec:
       default.replication.factor: 1
       min.insync.replicas: 1
       inter.broker.protocol.version: "3.9"
-
+    storage:
+      type: jbod
+      volumes:
+        - id: 0
+          type: persistent-claim
+          size: 10Gi
+          deleteClaim: false
     resources:
       requests:
         cpu: "500m"
@@ -41,6 +48,20 @@ spec:
       limits:
         cpu: "2"
         memory: "4Gi"
+
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 10Gi
+      deleteClaim: false
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "2Gi"
 
   entityOperator:
     topicOperator:
